@@ -1,0 +1,13 @@
+.train-list{
+    text-align: left;
+    margin-top: 50px;
+  }
+  .train-list ul li{
+   display:inline-block;
+   width:70px;
+   border: 1px,solid;
+   padding: 10px;
+  }
+  .train-list ul{
+    margin: 0;
+  }
