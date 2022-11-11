@@ -80,11 +80,10 @@ const handleSubmit=async(e)=>{
                   <th>Passenger Name</th>
                   <th>Email</th>
                   <th>phone</th>
-                  <th>Journey date</th>
                   <th>Source</th>
                   <th>Destination</th>
                   <th>Class name</th>
-                  <th>Seats Reserved</th>                
+                               
                 </tr>
               </thead>
               <tbody>
@@ -92,17 +91,16 @@ const handleSubmit=async(e)=>{
                   gettraindata.length >0 ?(
                     gettraindata.map((getTrain,index)=>(
                    <tr key={index}>
-                  <td>{index+1} </td>
                   <td>{getTrain.bookingId}</td>
                   <td>{getTrain.trainName}</td>
                   <td>{getTrain.passengerName}</td>
                   <td>{getTrain.email}</td>
                   <td>{getTrain.phone}</td>
-                  <td>{getTrain.journeyDate}</td>
-                  <td>{getTrain.sourceStation}</td>
-                  <td>{getTrain.destinationStation}</td>
+                 
+                  <td>{getTrain.source}</td>
+                  <td>{getTrain.destination}</td>
                   <td>{getTrain.className}</td>               
-                  <td>{getTrain.seats}</td>
+                  
                  
 
                  

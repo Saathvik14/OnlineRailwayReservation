@@ -3,138 +3,82 @@ import httpClient from "../http-common";
 import Backg from "../assets/bgg.jpg";
 import { Link } from 'react-router-dom';
 import Logo from "../assets/logo.jpg"
+import { useNavigate } from "react-router-dom";
+import {useParams}from 'react-router-dom';
 import axios from "axios";
 
 
 
 function BookingForm() {
-  const [userId, setuserId] = useState('');
-  const [trainName, setTrainName] = useState('');
-  const [passengerId ,setPassengerId]=useState('')
-  const [passengerName ,setPassengerName]=useState('')
-  const [email,setEmail]=useState('')
-  const [phone,setPhone]=useState('')
-  const [sourceStation, setSourceStation] = useState('');
-  const [destinationStation, setDestinationStation] = useState('');
-  const[journeyDate, setJourneyDate] = useState('');
+ 
+  const [msg,setMsg]=useState();
+  const [email,setEmail]=useState('');
   const [seats, setSeats] = useState('');
-  const [trainClass, setTrainClass] = useState('');
   const [amount, setamount] = useState('');
- 
-  const [message, setMessage] = useState(""); 
-
-  
-  
-  
-
-  const handleuserId = (event) => {
-    const userId = event.target.value;
-    setuserId(userId);
-  };
-  
-  
-  const handletrainName = (event) => {
-    const trainName = event.target.value;
-    setTrainName(trainName);
-  };
-
-  const handlepassengerId = (event) => {
-    const passengerId = event.target.value;
-    setPassengerId(passengerId);
-  };
-  const handlepassengerName = (event) => {
-    const passengerName = event.target.value;
-    setPassengerName(passengerName);
-  };
-
-  const handleemail = (event) => {
-    const email = event.target.value;
-    setEmail(email);
-  };
-  const handlephone = (event) => {
-    const phone = event.target.value;
-    setPhone(phone);
-  };
-
-
-  const handlesourceStation = (event) => {
-    const source = event.target.value;
-    setSourceStation(source);
-  };
-  const handledestinationStation = (event) => {
-    const destination = event.target.value;
-    setDestinationStation(destination);
-  };
-  const handlejourneyDate = (event) => {
-    const journeyDate = event.target.value;
-    setJourneyDate(journeyDate);
-  };
-
-  const handletrainClass= (event) => {
-    const className = event.target.value;
-    setTrainClass(className);
-  };
-  const handleseats = (event) => {
-    const seats = event.target.value;
-    setSeats(seats);
-  };
-  const handleamount = (event) => {
-    const amount = event.target.value;
-    setamount(amount);
-  };
-
-
-
-
- 
-  const submitBooking = async (e) => {
-    e.preventDefault();
-    const bookingdata = {
-     userId:userId,
-      trainName: trainName,
-      passengerId:passengerId,
-      passengerName:passengerName,
-      email:email,
-      phone:phone,
-      journeyDate:journeyDate,  
-     sourceStation:sourceStation,
-     destinationStation:destinationStation,
-     trainClass:trainClass,
-     seats:seats,
-     amount:amount
+  const [trainedit ,setTrainedit]=useState(
+    { 
+      trainId:"",
+      trainName: "",
+      passengerName:"",
+      email:"",
+      phone:"",
      
-    
-
-     
-    };
-    
-    
-
-    await 
-    httpClient.post(
-        "/book/addbooking",
-        JSON.stringify(bookingdata),
-        alert("Booking successfull"),
-        await console.log("hello")
-       
+        source:"",
+        destination:"",
+  
+        className:"",
         
-        
-      )
-
       
-      .then((result) => {
-       
-        setMessage(result.data.msg);
-        console.log(result.data);
-        console.log(result.data.msg);
-        
-      }
-      )
-      ;
-      
-  };
-  let p="http://localhost:9094/pgredirect/"+email+"/"+amount;
+        seats:"",
+        amount:""
+  }
+  );
+  
+  const Navigate=useNavigate();
+  const {trainId}=useParams();
 
+console.log(trainId);
+
+
+
+
+//amount=trainedit.totalNumOfSeats*trainedit.price;
+
+
+
+useEffect(()=>{
+  const edittrainId=async()=>{
+const reqdata=await fetch ( `/train/viewtrainbyno/${trainId}`);
+const res=reqdata.json();
+setTrainedit(await res);
+
+
+  }
+  edittrainId();
+},[]
+)
+const handleEdit=(e)=>{
+
+setTrainedit({...trainedit,[e.target.name]:e.target.value});
+}
+
+const handleTrainupdate= async (e)=>{
+  e.preventDefault();
+const response=await axios.post(`/book/addbooking`,trainedit)
+setMsg(response.data.msg)
+
+setTimeout(()=>{
+ 
+
+},2000);
+
+
+
+
+}
+
+
+let p="http://localhost:9094/pgredirect/"+trainedit.email+"/"+trainedit.totalNumOfSeats*trainedit.price;
 
   return (
 <div>
@@ -151,7 +95,7 @@ function BookingForm() {
       <div className="mainDiv">
         <div className="container" >
          
-            <form onSubmit={submitBooking} className="formCont">
+            <form onSubmit={handleTrainupdate} className="formCont">
       
              
 
@@ -159,129 +103,137 @@ function BookingForm() {
 
             
 
-                <label className="form-label">Passenger Name </label>
+                <label className="form-label mt-2">Train Id </label>
                 <input
                   type="text"
-                  name="passengerName"
+                  name="trainId"
                   className="form-control p-2"
-                  onChange={(e) => handlepassengerName(e)}
-                />
-              
+                  value={trainedit.trainId}
+                  onChange={(e) => handleEdit(e)}/>
 
-              
-              <label className="form-label">Email </label>
-                <input
-                  type="text"
-                  name="email"
-                  className="form-control p-2"
-                  onChange={(e) => handleemail(e)}
-                />
-              
 
-          
-                <label className="form-label">Phone</label>
-                <input
-                  type="text"
-                  name="phone"
-                  className="form-control p-2"
-                  onChange={(e) => handlephone(e)}
-               />
-                <label className="form-label">Train name</label>
+                  <label className="form-label">Train Name</label>
                 <input
                   type="name"
                   name="trainName"
                   className="form-control p-2"
-                  onChange={(e) => handletrainName(e)}
-                
-                />
-         
-            
-                    
-                <label className="form-label">Journey Date</label>
+                  value={trainedit.trainName}
+                  onChange={(e)=>handleEdit(e)}/>
+
+                  <lable className="form-lable mt-2">Passenger Name </lable>
+                 <input
+                  type="text"
+                   name="passengerName"
+                   placeholder="Enter Passenger Name"
+                  className="form-control p-2"
+                  value={trainedit.passengerName}
+                  onChange={(e)=>handleEdit(e)}/>
+              
+
+              
+              <label className="form-label mt-2">Email </label>
                 <input
                   type="text"
-                  name="journeyDate"
+                  name="email"
                   className="form-control p-2"
-                  onChange={(e) => handlejourneyDate(e)}
-                 
-                />
-            
+                  placeholder="Personel E-Mail"
+                  value={trainedit.email}
+                  onChange={(e)=>handleEdit(e)}/>
+              
 
+          
+                <label className="form-label mt-2">Phone</label>
+                <input
+                  type="text"
+                  name="phone"
+                  className="form-control p-2"
+                  placeholder="Mobile Number"
+                  value={trainedit.phone}
+                  onChange={(e)=>handleEdit(e)}/>
+                
+                    
              
-                <label className="form-label">Source </label>
+                <label className="form-label mt-2">Source </label>
                 <input
                   type="text"
                   name="source"
                   className="form-control p-2"
-                  onChange={(e) => handlesourceStation(e)}
-                
-                />
+                  value={trainedit.source}
+                 onChange={(e)=>handleEdit(e)}/>
               
 
             
-                <label className="form-label">Destination</label>
+                <label className="form-label mt-2">Destination</label>
                 <input
                   type="text"
                   name="destination"
                   className="form-control p-2"
-                  onChange={(e) => handledestinationStation(e)}
-                 
-                />
+                  value={trainedit.destination}
+                  onChange={(e)=>handleEdit(e)}/>
                   
-                <label className="form-label">Class Name</label>
+                <label className="form-label mt-2">Class Name</label>
                 <input
                   type="text"
                   name="trainClass"
                   className="form-control p-2"
-                 onChange={(e) => handletrainClass(e)}
-                
-                />
-                   
-                <label className="form-label">Seats Required</label>
-                <input
-                  type="number"
-                  name="Seats"
-                  className="form-control p-2"
-                  onChange={(e) => handleseats(e)}
-                />
+                  value={trainedit.className}
+                  onChange={(e)=>handleEdit(e)}/>
 
-<label className="form-label">Amount </label>
+                <lable className="form-lable mt-2">Train Seat/Price</lable>
                 <input
-                  type="number"
-                  name="amount"
+                 type="text"
+                name="price"
+                className="form-control p-2"
+                value={trainedit.price}
+                onChange={(e)=>handleEdit(e)}/>
+                   
+               
+
+                   <lable className="form-lable mt-2">Train Class</lable>
+                  <input
+                  type="text"
+                  name="totalnumOfSeats"
                   className="form-control p-2"
-                  onChange={(e) => handleamount(e)}
-                />
+                  value={trainedit.className}
+                  onChange={(e)=>handleEdit(e)}/>
+
+<label className="form-label mt-2">Seats Required </label>
+              <input
+                type="number"
+                name="totalNumOfSeats"
+                placeholder="Enter Number of Seats Available"
+                className="form-control p-2"
+                value={trainedit.seats}
+                onChange={(e) => handleEdit(e)}
+              />
+
+<lable className="form-lable mt-2">Price</lable>
+    <input
+    type="text"
+    name="numOfSeats"
+    className="form-control p-2"
+     value={trainedit.totalNumOfSeats*trainedit.price}
+     onChange={(e)=>handleEdit(e)}/>
             
             
              
-           
-
-<button className="btn btn-primary m-2"
+  <button className="btn btn-primary m-2"
         onClick={(e)=>{
           window.open(p);
-          window.location.href="/viewbooking";
+          window.location.href="/userdash";
           
           
   
 
           ///Navigate("/http://localhost:9094/pgdirect/"+cartTotal);
-        }}>BOOK NOW</button>
+        }}>DO PAYMENT</button>
 
 </form>
          
                
               </div>
            
-          {message ? (
-              <div className="text-success text-white">
-                {" "}
-                <h5>{message} </h5>
-              </div>
-            ) : (
-              <></>
-            )}
-          
+         
         
         </div>
      

@@ -30,6 +30,10 @@ public class Booking {
     private int bookingId;
 
 
+    @Digits(integer = 5,fraction = 0)
+    private int trainId;
+
+
 
 
     @Pattern(regexp = "^[A-Za-z -]+$", message = "Only alphabets allowed and - character allowed")
@@ -66,24 +70,24 @@ public class Booking {
     @Pattern(regexp = "^[A-Za-z -]+$", message = "Only alphabets allowed and - character allowed")
     @Size(min = 3, max = 20, message = "min 3 max 20 alphabets")
     @ApiModelProperty(notes = "Source Station.")
-    private String sourceStation;
+    private String source;
 
 
     @Pattern(regexp = "^[A-Za-z -]+$", message = "Only alphabets allowed and - character allowed")
     @Size(min = 3, max = 20, message = "min 3 max 20 alphabets")
     @ApiModelProperty(notes = "Destination Station.")
-    private String destinationStation;
+    private String destination;
 
     @NotEmpty(message = "Required")
     @Pattern(regexp = "^[A-Za-z0-9 -]+$", message = "Only alphabets and digits allowed with space and \"-\". No other special characters allowed")
     @Size(min = 3, max = 20, message = "Min 3 and max 20 alphabets allowed")
     @ApiModelProperty(notes = "The Train Class Name.")
-    private String trainClass;
+    private String className;
 
     @NotNull
     @Digits(integer = 1, fraction = 0)
     @ApiModelProperty(notes = "The total number of seats under the Train Class.")
-    private int Seats;
+    private int seats;
 
     @NotNull
     @Digits(integer = 4,fraction=2)

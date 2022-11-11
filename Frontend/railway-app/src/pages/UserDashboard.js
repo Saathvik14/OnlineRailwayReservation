@@ -40,6 +40,9 @@ const handleSubmit=async(e)=>{
  .then((response)=>{setGettraindata(response.data);})
  .catch((err)=>console.log(err));
 }
+const handleReset=async(e)=>{
+  window.location.reload(false);
+}
 
   
 
@@ -89,16 +92,17 @@ const handleSubmit=async(e)=>{
     <table className="table">
       <thead>
         <tr>
-          <th>Sr. No </th>
-          <th>train id</th>
-          <th>train Name</th>
-          <th>source</th>
-          <th>destination</th>
-          <th>price</th>
+          <th>SL. No </th>
+          <th>Train id</th>
+          <th>Train Name</th>
+          <th>Source</th>
+          <th>Destination</th>
+          <th>Price</th>
           <th>Time of arrival</th>
           <th>Time of departure</th>
           <th>Total no of seats</th>
           <th>Class name</th>
+          <th>Do Booking</th>
         </tr>
       </thead>
       <tbody>
@@ -116,6 +120,7 @@ const handleSubmit=async(e)=>{
           <td>{getTrain.timeOfDeparture}</td>
           <td>{getTrain.totalNumOfSeats}</td>
           <td>{getTrain.className}</td>
+          <td><Link to={`/bookingform/${getTrain.trainId}`}className='delete'>DO BOOKING</Link></td>
 
          
           </tr>

@@ -43,7 +43,7 @@ function App() {
       <Route path='/viewbooking' element={<ViewBooking />} />
       <Route path='/usertlist' element={<UserTrainList />} />
       <Route path='/bookingform' element={<BookingForm />} />     
-      <Route path='/bookingform' element={<BookingForm />} />
+      <Route path ='/bookingform/:trainId' element={<BookingForm/>}/>
       <Route path='/dashboard' element={
          <Dashboard /> } />
 
